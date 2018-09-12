@@ -16,8 +16,8 @@ class ViewController: UIViewController {
     var operandStack = Array<Double>()
     var dysplayValue: Double {
         set {
-            userIsInTheTypingOfMiddleANumber = false
             dysplay.text = "\(newValue)"
+            userIsInTheTypingOfMiddleANumber = false
         }
         get {
             return NumberFormatter().number(from: dysplay.text!)!.doubleValue
@@ -35,6 +35,37 @@ class ViewController: UIViewController {
         } else {
             dysplay.text = digit
             userIsInTheTypingOfMiddleANumber = true
+        }
+    }
+    
+    @IBAction func operate(_ sender: UIButton) {
+        if userIsInTheTypingOfMiddleANumber {
+            enter()
+        }
+        let operation = sender.currentTitle!
+        switch operation {
+        case "×": preformOperation { $0 * $1 }
+        case "÷": preformOperation { $1 / $0 }
+        case "+": preformOperation { $0 + $1 }
+        case "-": preformOperation { $1 - $0 }
+        case "√": preformOperation { sqrt($0) }
+        default:
+            break
+        }
+        
+    }
+    
+    private func preformOperation(operation: (Double, Double) -> Double)  {
+        if operandStack.count >= 2 {
+            dysplayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            enter()
+        }
+    }
+    
+    private func preformOperation(operation: (Double) -> Double) {
+        if operandStack.count >= 1 {
+            dysplayValue = operation(operandStack.removeLast())
+            enter()
         }
     }
     
