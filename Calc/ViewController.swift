@@ -61,6 +61,7 @@ class ViewController: UIViewController {
         }
         let operation = sender.currentTitle!
         addHistory(text: operation)
+        addHistory(text: "=")
         switch operation {
         case "×": pereformOperation { $0 * $1 }
         case "÷": pereformOperation { $1 / $0 }
@@ -121,7 +122,11 @@ class ViewController: UIViewController {
     }
     
     private func addHistory(text: String) {
-        history.text = history.text! + " " + text
+        if history.text?.last == "=" {
+            history.text?.removeLast()
+        }
+        
+        history.text? += " " + text
     }
 }
 
