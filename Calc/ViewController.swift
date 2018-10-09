@@ -16,21 +16,29 @@ class ViewController: UIViewController {
     
     var userIsInTheTypingOfMiddleANumber: Bool = false
     var operandStack = Array<Double>()
-    var dysplayValue: Double {
+    var dysplayValue: Double? {
         set {
-            dysplay.text = numberFormatter().string(from: NSNumber(value: newValue))!
+            if newValue == nil {
+                dysplay.text = " "
+                history.text = history.text! + "Error"
+            } else {
+                dysplay.text = NSNumber(value: newValue!).stringValue
+            }
             userIsInTheTypingOfMiddleANumber = false
         }
         get {
-            return numberFormatter().number(from: dysplay.text!)!.doubleValue
-    
+            if let text = dysplay.text {
+                return numberFormatter().number(from: text)?.doubleValue
+            } else {
+                return nil
+            }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         decimalSeparator.setTitle(numberFormatter().decimalSeparator, for: .normal)
-        dysplayValue = 0
+        dysplayValue = nil
         history.text = " "
         operandStack = []
     }
@@ -47,7 +55,6 @@ class ViewController: UIViewController {
         }
     }
     
-
     @IBAction func removeLastDigit() {
         dysplay.text = String((dysplay.text?.dropLast())!)
         if dysplay.text == "" {
@@ -71,10 +78,24 @@ class ViewController: UIViewController {
         case "cos": pereformOperation { cos($0) }
         case "sqrt": pereformOperation { sqrt($0) }
         case "𝜋": performOperation { Double.pi }
+        case "±": pereformOperation { -$0 }
         default:
             break
         }
     }
+    
+    @IBAction func changeSignOperate(_ sender: UIButton) {
+        if userIsInTheTypingOfMiddleANumber {
+            if dysplay.text?.first == "-" {
+                dysplay.text?.remove(at: (dysplay.text?.startIndex)!)
+            } else {
+                dysplay.text = "-" + dysplay.text!
+            }
+        } else {
+            operate(sender)
+        }
+    }
+    
     
     @nonobjc private func performOperation(operation: () -> Double) {
         dysplayValue = operation()
@@ -85,6 +106,8 @@ class ViewController: UIViewController {
         if operandStack.count >= 1 {
             dysplayValue = operation(operandStack.removeLast())
             addStack()
+        } else {
+            dysplayValue = nil
         }
     }
     
@@ -92,6 +115,8 @@ class ViewController: UIViewController {
         if operandStack.count >= 2 {
             dysplayValue = operation(operandStack.removeLast(), operandStack.removeLast())
             addStack()
+        } else {
+            dysplayValue = nil
         }
     }
     
@@ -108,14 +133,18 @@ class ViewController: UIViewController {
     }
     
     private func addStack() {
-        operandStack.append(dysplayValue)
-        print("stack = \(operandStack)")
+        if dysplayValue != nil {
+            operandStack.append(dysplayValue!)
+            print("stack = \(operandStack)")
+        } else {
+            print("dysplay value = nil")
+        }
     }
     
     private func numberFormatter() -> NumberFormatter {
         let numberFormatterLoc = NumberFormatter()
         numberFormatterLoc.numberStyle = .decimal
-        numberFormatterLoc.maximumIntegerDigits = 5
+        numberFormatterLoc.maximumIntegerDigits = 10
         numberFormatterLoc.notANumberSymbol = "Error"
         numberFormatterLoc.groupingSeparator = " "
         return numberFormatterLoc
