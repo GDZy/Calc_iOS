@@ -12,36 +12,34 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var dysplay: UILabel!
     @IBOutlet weak var history: UILabel!
-    @IBOutlet weak var decimalSeparator: UIButton!
+    @IBOutlet weak var decimalSeparator: UIButton! {
+        didSet {
+            decimalSeparator.setTitle(numberFormatter().decimalSeparator, for: .normal)
+        }
+    }
     
     var userIsInTheTypingOfMiddleANumber: Bool = false
-    var operandStack = Array<Double>()
+    var brain = CalculatorBrain()
     var dysplayValue: Double? {
+        get {
+            if let text = dysplay.text {
+                return numberFormatter().number(from: text)?.doubleValue
+            }
+            return nil
+        }
         set {
             if newValue == nil {
                 dysplay.text = " "
-                history.text = history.text! + "Error"
+                addHistory(text: "Error")
             } else {
                 dysplay.text = NSNumber(value: newValue!).stringValue
             }
             userIsInTheTypingOfMiddleANumber = false
-        }
-        get {
-            if let text = dysplay.text {
-                return numberFormatter().number(from: text)?.doubleValue
-            } else {
-                return nil
-            }
+            history.text = brain.dysplayStack() ?? " "
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        decimalSeparator.setTitle(numberFormatter().decimalSeparator, for: .normal)
-        dysplayValue = nil
-        history.text = " "
-        operandStack = []
-    }
+
     
     @IBAction func appdendDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
@@ -67,21 +65,10 @@ class ViewController: UIViewController {
             enter()
         }
         let operation = sender.currentTitle!
+        dysplayValue = brain.performOperation(operation)
+        
         addHistory(text: operation)
         addHistory(text: "=")
-        switch operation {
-        case "×": pereformOperation { $0 * $1 }
-        case "÷": pereformOperation { $1 / $0 }
-        case "+": pereformOperation { $0 + $1 }
-        case "-": pereformOperation { $1 - $0 }
-        case "sin": pereformOperation { sin($0) }
-        case "cos": pereformOperation { cos($0) }
-        case "sqrt": pereformOperation { sqrt($0) }
-        case "𝜋": performOperation { Double.pi }
-        case "±": pereformOperation { -$0 }
-        default:
-            break
-        }
     }
     
     @IBAction func changeSignOperate(_ sender: UIButton) {
@@ -96,49 +83,22 @@ class ViewController: UIViewController {
         }
     }
     
-    
-    @nonobjc private func performOperation(operation: () -> Double) {
-        dysplayValue = operation()
-        addStack()
-    }
-    
-    private func pereformOperation(operation: (Double) -> Double) {
-        if operandStack.count >= 1 {
-            dysplayValue = operation(operandStack.removeLast())
-            addStack()
-        } else {
-            dysplayValue = nil
-        }
-    }
-    
-    private func pereformOperation(operation: (Double, Double) -> Double)  {
-        if operandStack.count >= 2 {
-            dysplayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            addStack()
-        } else {
-            dysplayValue = nil
-        }
-    }
-    
     @IBAction func enter() {
         addHistory(text: dysplay.text!)
         
         userIsInTheTypingOfMiddleANumber = false
         
-        addStack()
+        if let value = dysplayValue {
+            dysplayValue = brain.pushOperand(value)
+        } else {
+            dysplayValue = nil
+        }
     }
     
     @IBAction func reset(_ sender: UIButton) {
-        viewDidLoad()
-    }
-    
-    private func addStack() {
-        if dysplayValue != nil {
-            operandStack.append(dysplayValue!)
-            print("stack = \(operandStack)")
-        } else {
-            print("dysplay value = nil")
-        }
+        brain = CalculatorBrain()
+        dysplayValue = nil
+        history.text = " "
     }
     
     private func numberFormatter() -> NumberFormatter {
@@ -151,11 +111,11 @@ class ViewController: UIViewController {
     }
     
     private func addHistory(text: String) {
-        if history.text?.last == "=" {
-            history.text?.removeLast()
-        }
-        
-        history.text? += " " + text
+//        if history.text?.last == "=" {
+//            history.text?.removeLast()
+//        }
+//
+//        history.text? += " " + text
     }
 }
 
