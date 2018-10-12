@@ -38,16 +38,18 @@ class CalculatorBrain: CustomStringConvertible {
     var variableValues = [String: Double] ()
     
     var description: String {
-        var textOp = ""
-        var (_, remainder, temporaryText) = evaluate(ops: stackOp)
-        textOp = temporaryText
         
-        while !remainder.isEmpty {
-            (_, remainder, temporaryText) = evaluate(ops: remainder)
-            textOp = "\(temporaryText), \(textOp)"
-        }
-
-        return textOp
+        let (descriptionOp, _) = resultDescription(ops: stackOp)
+        return descriptionOp
+        
+//        var (temporaryText, remainder) = description(ops: stackOp)
+//        var textOp = temporaryText
+//
+//        while !remainder.isEmpty {
+//            (temporaryText, remainder) = description(ops: remainder)
+//            textOp = "\(temporaryText), \(textOp)"
+//        }
+//        return textOp
     }
     
     init() {
@@ -84,55 +86,75 @@ class CalculatorBrain: CustomStringConvertible {
     }
     
     func evaluate() -> Double? {
-        let (result, remainder, _) = evaluate(ops: stackOp)
+        let (result, remainder) = evaluate(ops: stackOp)
         print("\(stackOp) = \(String(describing: result)) with \(remainder) left over")
         print(description)
         return result
     }
     
-    private func evaluate(ops: [Op]) -> (result: Double?, remain: [Op], remainingText: String) {
+    private func evaluate(ops: [Op]) -> (result: Double?, remain: [Op]) {
         var remainingOp = ops
         
         if !remainingOp.isEmpty {
             let op = remainingOp.removeLast()
             switch op {
             case .operand(let operand):
-                return (operand, remainingOp, "\(operand)")
+                return (operand, remainingOp)
             case .variable(let symbol):
                 if let value = variableValues[symbol] {
-                    return (value, remainingOp, symbol)
+                    return (value, remainingOp)
                 }
-            case .constantOperation(let symbol, let operation):
-                return (operation(), remainingOp, symbol)
-            case .unaryOperation(let symbol, let operation):
+            case .constantOperation(_, let operation):
+                return (operation(), remainingOp)
+            case .unaryOperation(_, let operation):
                 let operandEvaluation = evaluate(ops: remainingOp)
-                let text = "\(symbol)(\(operandEvaluation.remainingText))"
-             
                 if let operadn = operandEvaluation.result {
-                    return (operation(operadn), operandEvaluation.remain, text)
-                } else {
-                    return (nil, operandEvaluation.remain, text)
+                    return (operation(operadn), operandEvaluation.remain)
                 }
-            case .binaryOperation(let symbol, let operation):
+            case .binaryOperation(_, let operation):
                 let op1Evaluation = evaluate(ops: remainingOp)
-                
-                var text = ""
-                if remainingOp.count - op1Evaluation.remain.count > 2 {
-                    text = "\(symbol) (\(op1Evaluation.remainingText))"
-                } else {
-                    text = "\(symbol) \(op1Evaluation.remainingText)"
-                }
-                
                 let op2Evaluation = evaluate(ops: op1Evaluation.remain)
-                text = "\(op2Evaluation.remainingText) " + text
                 if let op1 = op1Evaluation.result, let op2 = op2Evaluation.result {
-                    return (operation(op1, op2), op2Evaluation.remain, text)
-                } else {
-                    return (nil, op2Evaluation.remain, text)
+                    return (operation(op1, op2), op2Evaluation.remain)
                 }
             }
         }
-        return (nil, remainingOp, "?")
+        return (nil, remainingOp)
+    }
+
+    private func resultDescription(ops: [Op]) -> (result: String, remain: [Op]) {
+        let (bitDescription, remain) = description(ops: ops)
+        if !remain.isEmpty {
+            let (currentDescription, currentRemain) = resultDescription(ops: remain)
+            return ("\(currentDescription), \(bitDescription)", currentRemain)
+        }
+        return (bitDescription, remain)
+    }
+    
+    
+    private func description(ops: [Op]) -> (result: String, remain: [Op]) {
+        var remainingOp = ops
+        if !remainingOp.isEmpty {
+            let op = remainingOp.removeLast()
+            switch op {
+            case .operand, .variable, .constantOperation:
+                return (op.description, remainingOp)
+            case .unaryOperation:
+                let operandEvaluated = description(ops: remainingOp)
+                let text = op.description + "(\(operandEvaluated.result))"
+                return(text, operandEvaluated.remain)
+            case .binaryOperation:
+                let op1Evaluated = description(ops: remainingOp)
+                var op1 = op1Evaluated.result
+                if remainingOp.count - op1Evaluated.remain.count > 2 {
+                    op1 = "(\(op1))"
+                }
+                let op2Evaluated = description(ops: op1Evaluated.remain)
+                let text = op2Evaluated.result + " \(op.description) " + op1
+                return (text, op2Evaluated.remain)
+            }
+        }
+        return ("?", remainingOp)
     }
     
     func dysplayStack() -> String? {

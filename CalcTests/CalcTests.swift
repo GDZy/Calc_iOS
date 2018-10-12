@@ -41,4 +41,23 @@ class CalcTests: XCTestCase {
         XCTAssertEqual(5.2, brain.pushOperand("x")!)
         XCTAssertEqual(10.4, brain.performOperation("+")!)
     }
+    
+    func testDescriptionStack() {
+        // cos ↲
+        _ = brain.performOperation("cos")
+        XCTAssertEqual(brain.description, "cos(?)")
+        
+        // 3 ↲ 5 sqrt + sqrt 6 ÷
+        _ = brain.pushOperand(3)
+        _ = brain.pushOperand(5)
+        _ = brain.performOperation("sqrt")
+        _ = brain.performOperation("+")
+        _ = brain.performOperation("sqrt")
+        _ = brain.pushOperand(6)
+        _ = brain.performOperation("÷")
+        XCTAssertEqual(brain.description, "cos(?), sqrt(3.0 + sqrt(5.0)) ÷ 6.0")
+    }
+    
+    
+    
 }
