@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CalculatorBrain {
+class CalculatorBrain: CustomStringConvertible {
     
     private enum Op: CustomStringConvertible {
         case operand (Double)
@@ -36,6 +36,19 @@ class CalculatorBrain {
     private var stackOp = [Op] ()
     private var knowOperations = [String: Op] ()
     var variableValues = [String: Double] ()
+    
+    var description: String {
+        var textOp = ""
+        var (_, remainder, temporaryText) = evaluate(ops: stackOp)
+        textOp = temporaryText
+        
+        while !remainder.isEmpty {
+            (_, remainder, temporaryText) = evaluate(ops: remainder)
+            textOp = "\(temporaryText), \(textOp)"
+        }
+
+        return textOp
+    }
     
     init() {
         func learnOperation(_ operation: Op) {
@@ -71,41 +84,55 @@ class CalculatorBrain {
     }
     
     func evaluate() -> Double? {
-        let (result, remainder) = evaluate(ops: stackOp)
+        let (result, remainder, _) = evaluate(ops: stackOp)
         print("\(stackOp) = \(String(describing: result)) with \(remainder) left over")
+        print(description)
         return result
     }
     
-    private func evaluate(ops: [Op]) -> (result: Double?, remain: [Op]) {
+    private func evaluate(ops: [Op]) -> (result: Double?, remain: [Op], remainingText: String) {
         var remainingOp = ops
         
         if !remainingOp.isEmpty {
             let op = remainingOp.removeLast()
             switch op {
             case .operand(let operand):
-                return (operand, remainingOp)
+                return (operand, remainingOp, "\(operand)")
             case .variable(let symbol):
                 if let value = variableValues[symbol] {
-                    return (value, remainingOp)
+                    return (value, remainingOp, symbol)
                 }
-            case .constantOperation(_, let operation):
-                return (operation(), remainingOp)
-            case .unaryOperation(_, let operation):
+            case .constantOperation(let symbol, let operation):
+                return (operation(), remainingOp, symbol)
+            case .unaryOperation(let symbol, let operation):
                 let operandEvaluation = evaluate(ops: remainingOp)
+                let text = "\(symbol)(\(operandEvaluation.remainingText))"
+             
                 if let operadn = operandEvaluation.result {
-                    return (operation(operadn), operandEvaluation.remain)
+                    return (operation(operadn), operandEvaluation.remain, text)
+                } else {
+                    return (nil, operandEvaluation.remain, text)
                 }
-            case .binaryOperation(_, let operatio):
+            case .binaryOperation(let symbol, let operation):
                 let op1Evaluation = evaluate(ops: remainingOp)
-                if let op1 = op1Evaluation.result {
-                    let op2Evaluation = evaluate(ops: op1Evaluation.remain)
-                    if let op2 = op2Evaluation.result {
-                        return (operatio(op1, op2), op2Evaluation.remain)
-                    }
+                
+                var text = ""
+                if remainingOp.count - op1Evaluation.remain.count > 2 {
+                    text = "\(symbol) (\(op1Evaluation.remainingText))"
+                } else {
+                    text = "\(symbol) \(op1Evaluation.remainingText)"
+                }
+                
+                let op2Evaluation = evaluate(ops: op1Evaluation.remain)
+                text = "\(op2Evaluation.remainingText) " + text
+                if let op1 = op1Evaluation.result, let op2 = op2Evaluation.result {
+                    return (operation(op1, op2), op2Evaluation.remain, text)
+                } else {
+                    return (nil, op2Evaluation.remain, text)
                 }
             }
         }
-        return (nil, remainingOp)
+        return (nil, remainingOp, "?")
     }
     
     func dysplayStack() -> String? {

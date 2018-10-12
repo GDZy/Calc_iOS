@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var history: UILabel!
     @IBOutlet weak var decimalSeparator: UIButton! {
         didSet {
-            decimalSeparator.setTitle(numberFormatter().decimalSeparator, for: .normal)
+            decimalSeparator.setTitle(numberFormatter().decimalSeparator ?? ".", for: .normal)
         }
     }
     
@@ -38,8 +38,6 @@ class ViewController: UIViewController {
             history.text = brain.dysplayStack() ?? " "
         }
     }
-    
-
     
     @IBAction func appdendDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!

@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Calc/ViewController.swift"
-            timestampString = "560941111.466622"
+            timestampString = "561038345.541611"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
             landmarkName = "changeSignOperate(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Calc/ViewController.swift"
-            timestampString = "560941111.467249"
+            timestampString = "561038345.542055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "34"
@@ -41,14 +41,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Calc/CalculatorBrain.swift"
-            timestampString = "560941111.46764"
+            filePath = "CalcTests/CalcTests.swift"
+            timestampString = "561038345.542135"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "performOperation(_:)"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "testPushOperandVariable()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CalcTests.CalcTests.testPushOperandVariable() -&gt; ()"
+                  moduleName = "CalcTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dzmitry/Documents/projects/Calc_iOS/CalcTests/CalcTests.swift"
+                  timestampString = "560956178.054485"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "798">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #3 : @autoclosure () throws -&gt; Swift.Double in CalcTests.CalcTests.testPushOperandVariable() -&gt; ()"
+                  moduleName = "CalcTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dzmitry/Documents/projects/Calc_iOS/CalcTests/CalcTests.swift"
+                  timestampString = "560956178.057071"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41"
+                  offsetFromSymbolStart = "25">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -58,13 +90,61 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Calc/CalculatorBrain.swift"
-            timestampString = "560941111.468027"
+            timestampString = "561038345.542425"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "pushOperand(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CalcTests/CalcTests.swift"
+            timestampString = "561038345.5433021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
             endingLineNumber = "42"
-            landmarkName = "learnOperation(_:)"
-            landmarkType = "9">
+            landmarkName = "testPushOperandVariable()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CalcTests.CalcTests.testPushOperandVariable() -&gt; ()"
+                  moduleName = "CalcTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dzmitry/Documents/projects/Calc_iOS/CalcTests/CalcTests.swift"
+                  timestampString = "560956178.072505"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "1207">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #5 : @autoclosure () throws -&gt; Swift.Double in CalcTests.CalcTests.testPushOperandVariable() -&gt; ()"
+                  moduleName = "CalcTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dzmitry/Documents/projects/Calc_iOS/CalcTests/CalcTests.swift"
+                  timestampString = "560956178.074886"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "25">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
