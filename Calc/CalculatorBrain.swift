@@ -38,18 +38,8 @@ class CalculatorBrain: CustomStringConvertible {
     var variableValues = [String: Double] ()
     
     var description: String {
-        
         let (descriptionOp, _) = resultDescription(ops: stackOp)
         return descriptionOp
-        
-//        var (temporaryText, remainder) = description(ops: stackOp)
-//        var textOp = temporaryText
-//
-//        while !remainder.isEmpty {
-//            (temporaryText, remainder) = description(ops: remainder)
-//            textOp = "\(temporaryText), \(textOp)"
-//        }
-//        return textOp
     }
     
     init() {
@@ -155,10 +145,6 @@ class CalculatorBrain: CustomStringConvertible {
             }
         }
         return ("?", remainingOp)
-    }
-    
-    func dysplayStack() -> String? {
-        return stackOp.map { $0.description }.joined(separator: " ")
     }
 }
 

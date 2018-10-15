@@ -30,12 +30,11 @@ class ViewController: UIViewController {
         set {
             if newValue == nil {
                 dysplay.text = " "
-                addHistory(text: "Error")
             } else {
                 dysplay.text = NSNumber(value: newValue!).stringValue
             }
             userIsInTheTypingOfMiddleANumber = false
-            history.text = brain.dysplayStack() ?? " "
+            history.text = "\(brain.description) ="
         }
     }
     
@@ -64,9 +63,6 @@ class ViewController: UIViewController {
         }
         let operation = sender.currentTitle!
         dysplayValue = brain.performOperation(operation)
-        
-        addHistory(text: operation)
-        addHistory(text: "=")
     }
     
     @IBAction func changeSignOperate(_ sender: UIButton) {
@@ -82,8 +78,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func enter() {
-        addHistory(text: dysplay.text!)
-        
         userIsInTheTypingOfMiddleANumber = false
         
         if let value = dysplayValue {
@@ -106,14 +100,6 @@ class ViewController: UIViewController {
         numberFormatterLoc.notANumberSymbol = "Error"
         numberFormatterLoc.groupingSeparator = " "
         return numberFormatterLoc
-    }
-    
-    private func addHistory(text: String) {
-//        if history.text?.last == "=" {
-//            history.text?.removeLast()
-//        }
-//
-//        history.text? += " " + text
     }
 }
 
