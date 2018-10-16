@@ -34,7 +34,7 @@ class ViewController: UIViewController {
                 dysplay.text = NSNumber(value: newValue!).stringValue
             }
             userIsInTheTypingOfMiddleANumber = false
-            history.text = "\(brain.description) ="
+            history.text = brain.description == "" ? " " : "\(brain.description) ="
         }
     }
     
@@ -88,10 +88,26 @@ class ViewController: UIViewController {
     }
     
     @IBAction func reset(_ sender: UIButton) {
-        brain = CalculatorBrain()
+        brain.clearAll()
         dysplayValue = nil
-        history.text = " "
     }
+    
+    @IBAction func setValueVariable(_ sender: UIButton) {
+        if let value = dysplayValue, let symbol = sender.currentTitle?.dropFirst() {
+            brain.setVariable(String(symbol), value: value)
+            
+            dysplayValue = brain.evaluate()
+        }
+    }
+    
+    @IBAction func pushVariable(_ sender: UIButton) {
+        if userIsInTheTypingOfMiddleANumber {
+            enter()
+        }
+        dysplayValue = brain.pushOperand(sender.currentTitle!)
+    }
+    
+    
     
     private func numberFormatter() -> NumberFormatter {
         let numberFormatterLoc = NumberFormatter()

@@ -35,7 +35,19 @@ class CalculatorBrain: CustomStringConvertible {
     
     private var stackOp = [Op] ()
     private var knowOperations = [String: Op] ()
-    var variableValues = [String: Double] ()
+    private var variableValues = [String: Double] ()
+    
+    func getVariable(name: String) -> Double? {
+        return variableValues[name]
+    }
+    
+    func setVariable(_ symbol: String, value: Double) {
+        variableValues[symbol] = value
+    }
+    
+    func clearVariables() {
+        variableValues.removeAll()
+    }
     
     var description: String {
         let (descriptionOp, _) = resultDescription(ops: stackOp)
@@ -58,6 +70,15 @@ class CalculatorBrain: CustomStringConvertible {
         learnOperation(Op.constantOperation("𝜋", { .pi }))
     }
     
+    func clearStack() {
+        stackOp.removeAll()
+    }
+    
+    func clearAll() {
+        clearStack()
+        clearVariables()
+    }
+    
     func pushOperand (_ operand: Double) -> Double?{
         stackOp.append(Op.operand(operand))
         return evaluate()
@@ -77,7 +98,7 @@ class CalculatorBrain: CustomStringConvertible {
     
     func evaluate() -> Double? {
         let (result, remainder) = evaluate(ops: stackOp)
-        print("\(stackOp) = \(String(describing: result)) with \(remainder) left over")
+        print("\(stackOp) = \(String(describing: result)) with \(remainder) left over, \(variableValues)")
         print(description)
         return result
     }
@@ -113,7 +134,9 @@ class CalculatorBrain: CustomStringConvertible {
     }
 
     private func resultDescription(ops: [Op]) -> (result: String, remain: [Op]) {
-        let (bitDescription, remain) = description(ops: ops)
+        var (bitDescription, remain) = description(ops: ops)
+        bitDescription = bitDescription == "?" ? "" : bitDescription
+        
         if !remain.isEmpty {
             let (currentDescription, currentRemain) = resultDescription(ops: remain)
             return ("\(currentDescription), \(bitDescription)", currentRemain)
