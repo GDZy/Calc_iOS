@@ -15,7 +15,7 @@ class CalculatorBrain: CustomStringConvertible {
         case variable (String)
         case constantOperation (String, () -> (Double))
         case unaryOperation (String, (Double) -> (Double))
-        case binaryOperation (String, (Double, Double) -> (Double))
+        case binaryOperation (String, Int, Bool, (Double, Double) -> (Double))
         
         var description: String {
             switch self {
@@ -27,10 +27,29 @@ class CalculatorBrain: CustomStringConvertible {
                 return symbol
             case .unaryOperation(let symbol, _):
                 return symbol
-            case .binaryOperation(let symbol, _):
+            case .binaryOperation(let symbol, _,_, _):
                 return symbol
             }
         }
+        
+        var precedence: Int {
+            switch self {
+            case .binaryOperation(_, let precedence, _, _):
+                return precedence
+            default:
+                return Int.max
+            }
+        }
+        
+        var commutative: Bool {
+            switch self {
+            case .binaryOperation(_, _, let commutative, _):
+                return commutative
+            default:
+                return false
+            }
+        }
+        
     }
     
     private var stackOp = [Op] ()
@@ -59,10 +78,10 @@ class CalculatorBrain: CustomStringConvertible {
             knowOperations[operation.description] = operation
         }
         
-        learnOperation(Op.binaryOperation("+", { $0 + $1 }))
-        learnOperation(Op.binaryOperation("-", { $1 - $0 }))
-        learnOperation(Op.binaryOperation("×", { $0 * $1 }))
-        learnOperation(Op.binaryOperation("÷", { $1 / $0 }))
+        learnOperation(Op.binaryOperation("+", 1, false, { $0 + $1 }))
+        learnOperation(Op.binaryOperation("-", 1, true, { $1 - $0 }))
+        learnOperation(Op.binaryOperation("×", 2, false, { $0 * $1 }))
+        learnOperation(Op.binaryOperation("÷", 2, true, { $1 / $0 }))
         learnOperation(Op.unaryOperation("sin", { sin($0) }))
         learnOperation(Op.unaryOperation("cos", { cos($0) }))
         learnOperation(Op.unaryOperation("sqrt", { sqrt($0) }))
@@ -77,6 +96,14 @@ class CalculatorBrain: CustomStringConvertible {
     func clearAll() {
         clearStack()
         clearVariables()
+    }
+    
+    func popStack() -> Double? {
+        if !stackOp.isEmpty {
+            stackOp.removeLast()
+            return evaluate()
+        }
+        return nil
     }
     
     func pushOperand (_ operand: Double) -> Double?{
@@ -122,7 +149,7 @@ class CalculatorBrain: CustomStringConvertible {
                 if let operadn = operandEvaluation.result {
                     return (operation(operadn), operandEvaluation.remain)
                 }
-            case .binaryOperation(_, let operation):
+            case .binaryOperation(_, _, _, let operation):
                 let op1Evaluation = evaluate(ops: remainingOp)
                 let op2Evaluation = evaluate(ops: op1Evaluation.remain)
                 if let op1 = op1Evaluation.result, let op2 = op2Evaluation.result {
@@ -134,7 +161,7 @@ class CalculatorBrain: CustomStringConvertible {
     }
 
     private func resultDescription(ops: [Op]) -> (result: String, remain: [Op]) {
-        var (bitDescription, remain) = description(ops: ops)
+        var (bitDescription, remain, _) = description(ops: ops)
         bitDescription = bitDescription == "?" ? "" : bitDescription
         
         if !remain.isEmpty {
@@ -145,29 +172,32 @@ class CalculatorBrain: CustomStringConvertible {
     }
     
     
-    private func description(ops: [Op]) -> (result: String, remain: [Op]) {
+    private func description(ops: [Op]) -> (result: String, remain: [Op], precedence: Int) {
         var remainingOp = ops
         if !remainingOp.isEmpty {
             let op = remainingOp.removeLast()
             switch op {
             case .operand, .variable, .constantOperation:
-                return (op.description, remainingOp)
+                return (op.description, remainingOp, op.precedence)
             case .unaryOperation:
                 let operandEvaluated = description(ops: remainingOp)
                 let text = op.description + "(\(operandEvaluated.result))"
-                return(text, operandEvaluated.remain)
+                return(text, operandEvaluated.remain, op.precedence)
             case .binaryOperation:
-                let op1Evaluated = description(ops: remainingOp)
-                var op1 = op1Evaluated.result
-                if remainingOp.count - op1Evaluated.remain.count > 2 {
-                    op1 = "(\(op1))"
+                var (op1Result, op1Remain, op1Precedenc ) = description(ops: remainingOp)
+                if (op.precedence > op1Precedenc && op.commutative) || (op.precedence == op1Precedenc && op.commutative) {
+                    op1Result = "(\(op1Result))"
                 }
-                let op2Evaluated = description(ops: op1Evaluated.remain)
-                let text = op2Evaluated.result + " \(op.description) " + op1
-                return (text, op2Evaluated.remain)
+                
+                var (op2Result, op2Remain, op2Precedenc ) = description(ops: op1Remain)
+                if op.precedence > op2Precedenc {
+                    op2Result = "(\(op2Result))"
+                }
+                let text = op2Result + " \(op.description) " + op1Result
+                return (text, op2Remain, op.precedence)
             }
         }
-        return ("?", remainingOp)
+        return ("?", remainingOp, Int.max)
     }
 }
 

@@ -51,9 +51,14 @@ class ViewController: UIViewController {
     }
     
     @IBAction func removeLastDigit() {
-        dysplay.text = String((dysplay.text?.dropLast())!)
-        if dysplay.text == "" {
-            dysplay.text = " "
+        if userIsInTheTypingOfMiddleANumber {
+            if dysplay.text!.count > 1 {
+                dysplay.text = String((dysplay.text?.dropLast())!)
+            } else {
+                dysplay.text = "0"
+            }
+        } else {
+            dysplayValue = brain.popStack()
         }
     }
     
