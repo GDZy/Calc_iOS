@@ -171,3 +171,21 @@ class CalculatorBrain: CustomStringConvertible {
     }
 }
 
+class CalculatorFormatter: NumberFormatter {
+    
+    static let sharedInstanse =  CalculatorFormatter()
+    
+    override init() {
+        super.init()
+        self.locale = NSLocale.current
+        self.numberStyle = .decimal
+        self.maximumIntegerDigits = 10
+        self.notANumberSymbol = "Error"
+        self.groupingSeparator = " "
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+    }
+}
+

@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var history: UILabel!
     @IBOutlet weak var decimalSeparator: UIButton! {
         didSet {
-            decimalSeparator.setTitle(numberFormatter().decimalSeparator ?? ".", for: .normal)
+            decimalSeparator.setTitle(CalculatorFormatter.sharedInstanse.decimalSeparator ?? ".", for: .normal)
         }
     }
     
@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     var dysplayValue: Double? {
         get {
             if let text = dysplay.text {
-                return numberFormatter().number(from: text)?.doubleValue
+                return CalculatorFormatter.sharedInstanse.number(from: text)?.doubleValue
             }
             return nil
         }
@@ -105,17 +105,6 @@ class ViewController: UIViewController {
             enter()
         }
         dysplayValue = brain.pushOperand(sender.currentTitle!)
-    }
-    
-    
-    
-    private func numberFormatter() -> NumberFormatter {
-        let numberFormatterLoc = NumberFormatter()
-        numberFormatterLoc.numberStyle = .decimal
-        numberFormatterLoc.maximumIntegerDigits = 10
-        numberFormatterLoc.notANumberSymbol = "Error"
-        numberFormatterLoc.groupingSeparator = " "
-        return numberFormatterLoc
     }
 }
 
