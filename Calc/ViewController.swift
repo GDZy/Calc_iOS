@@ -27,12 +27,12 @@ class ViewController: UIViewController {
             }
             return nil
         }
-        set {
-            if newValue == nil {
-                dysplay.text = " "
-            } else {
-                dysplay.text = NSNumber(value: newValue!).stringValue
-            }
+    }
+    
+    var dysplayResult: CalculatorBrain.Result = .Value(0.0) {
+        didSet {
+            dysplay.text = dysplayResult.description
+                
             userIsInTheTypingOfMiddleANumber = false
             history.text = brain.description == "" ? " " : "\(brain.description) ="
         }
@@ -58,7 +58,8 @@ class ViewController: UIViewController {
                 dysplay.text = "0"
             }
         } else {
-            dysplayValue = brain.popStack()
+            let _ = brain.popStack()
+            dysplayResult = brain.evaluateAndReportError()
         }
     }
     
@@ -67,7 +68,7 @@ class ViewController: UIViewController {
             enter()
         }
         let operation = sender.currentTitle!
-        dysplayValue = brain.performOperation(operation)
+        dysplayResult = brain.performOperation(operation)
     }
     
     @IBAction func changeSignOperate(_ sender: UIButton) {
@@ -86,22 +87,22 @@ class ViewController: UIViewController {
         userIsInTheTypingOfMiddleANumber = false
         
         if let value = dysplayValue {
-            dysplayValue = brain.pushOperand(value)
+            dysplayResult = brain.pushOperand(value)
         } else {
-            dysplayValue = nil
+            dysplayResult = brain.evaluateAndReportError()
         }
     }
     
     @IBAction func reset(_ sender: UIButton) {
         brain.clearAll()
-        dysplayValue = nil
+        dysplayResult = brain.evaluateAndReportError()
     }
     
     @IBAction func setValueVariable(_ sender: UIButton) {
         if let value = dysplayValue, let symbol = sender.currentTitle?.dropFirst() {
             brain.setVariable(String(symbol), value: value)
             
-            dysplayValue = brain.evaluate()
+            dysplayResult = brain.evaluateAndReportError()
         }
     }
     
@@ -109,7 +110,7 @@ class ViewController: UIViewController {
         if userIsInTheTypingOfMiddleANumber {
             enter()
         }
-        dysplayValue = brain.pushOperand(sender.currentTitle!)
+        dysplayResult = brain.pushOperand(sender.currentTitle!)
     }
 }
 
