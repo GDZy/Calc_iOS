@@ -114,12 +114,10 @@ class ViewController: UIViewController {
     }
 }
 
-
-//extension UIButton {
-//    override open func layoutSubviews() {
-//        super.layoutSubviews()
-//        self.layer.borderColor = UIColor.black.cgColor
-//        self.layer.cornerRadius = 3
-//        self.layer.borderWidth = 1
-//    }
-//}
+extension UIButton {
+    open override func awakeFromNib() {
+        self.layer.borderColor = UIColor.black.cgColor
+        self.layer.cornerRadius = 3
+        self.layer.borderWidth = 1
+    }
+}
