@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CalculatorBrainViewController.swift
 //  Calc
 //
 //  Created by Dzmitry Herasiuk on 13.08.2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalculatorBrainViewController: UIViewController {
     
     @IBOutlet weak var dysplay: UILabel!
     @IBOutlet weak var history: UILabel!
@@ -111,6 +111,25 @@ class ViewController: UIViewController {
             enter()
         }
         dysplayResult = brain.pushOperand(sender.currentTitle!)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        struct Constant {
+            static let grfSegueKey = "Show Grf"
+        }
+
+        switch segue.identifier {
+        case Constant.grfSegueKey:
+            brain.saveProgram()
+//            let duplicateBrain = CalculatorBrain()
+//            duplicateBrain.restoreProgram()
+//
+//            if let vc = segue.destination as? GrfViewController {
+//                vc.program = duplicateBrain
+//            }
+        default:
+            break
+        }
     }
 }
 

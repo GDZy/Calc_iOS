@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		0197905D21215ECC00095865 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0197905C21215ECC00095865 /* AppDelegate.swift */; };
-		0197905F21215ECC00095865 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0197905E21215ECC00095865 /* ViewController.swift */; };
+		0197905F21215ECC00095865 /* CalculatorBrainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0197905E21215ECC00095865 /* CalculatorBrainViewController.swift */; };
 		0197906221215ECC00095865 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0197906021215ECC00095865 /* Main.storyboard */; };
 		0197906421215ECD00095865 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0197906321215ECD00095865 /* Assets.xcassets */; };
-		0197906721215ECD00095865 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0197906521215ECD00095865 /* LaunchScreen.storyboard */; };
+		01ADABEB21BFA2F90073ADE4 /* GrfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ADABEA21BFA2F90073ADE4 /* GrfViewController.swift */; };
+		01ADABED21BFA32E0073ADE4 /* GrfView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ADABEC21BFA32E0073ADE4 /* GrfView.swift */; };
+		01ADABEF21BFA33D0073ADE4 /* AxesDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ADABEE21BFA33D0073ADE4 /* AxesDrawer.swift */; };
 		01F3AD1D216CACAE0016DC21 /* CalculatorBrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F3AD1C216CACAE0016DC21 /* CalculatorBrain.swift */; };
 		01F3AD70216F707E0016DC21 /* CalcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F3AD6F216F707E0016DC21 /* CalcTests.swift */; };
 /* End PBXBuildFile section */
@@ -29,11 +31,13 @@
 /* Begin PBXFileReference section */
 		0197905921215ECC00095865 /* Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0197905C21215ECC00095865 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0197905E21215ECC00095865 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0197905E21215ECC00095865 /* CalculatorBrainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorBrainViewController.swift; sourceTree = "<group>"; };
 		0197906121215ECC00095865 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0197906321215ECD00095865 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0197906621215ECD00095865 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0197906821215ECD00095865 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		01ADABEA21BFA2F90073ADE4 /* GrfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrfViewController.swift; sourceTree = "<group>"; };
+		01ADABEC21BFA32E0073ADE4 /* GrfView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrfView.swift; sourceTree = "<group>"; };
+		01ADABEE21BFA33D0073ADE4 /* AxesDrawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxesDrawer.swift; sourceTree = "<group>"; };
 		01F3AD1C216CACAE0016DC21 /* CalculatorBrain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
 		01F3AD43216F50F70016DC21 /* CalculatorBrainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorBrainTests.swift; sourceTree = "<group>"; };
 		01F3AD45216F50F70016DC21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -64,6 +68,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0190CADC21B7C28100600C0C /* model */ = {
+			isa = PBXGroup;
+			children = (
+				01F3AD1C216CACAE0016DC21 /* CalculatorBrain.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		0190CADD21B7C29600600C0C /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0197905E21215ECC00095865 /* CalculatorBrainViewController.swift */,
+				01ADABEA21BFA2F90073ADE4 /* GrfViewController.swift */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
+		0190CADE21B7C2BB00600C0C /* views */ = {
+			isa = PBXGroup;
+			children = (
+				01ADABEC21BFA32E0073ADE4 /* GrfView.swift */,
+				01ADABEE21BFA33D0073ADE4 /* AxesDrawer.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		0190CADF21B7C2DD00600C0C /* additional */ = {
+			isa = PBXGroup;
+			children = (
+				0197905C21215ECC00095865 /* AppDelegate.swift */,
+				0197906021215ECC00095865 /* Main.storyboard */,
+				0197906321215ECD00095865 /* Assets.xcassets */,
+				0197906821215ECD00095865 /* Info.plist */,
+			);
+			path = additional;
+			sourceTree = "<group>";
+		};
 		0197905021215ECC00095865 = {
 			isa = PBXGroup;
 			children = (
@@ -88,13 +129,10 @@
 		0197905B21215ECC00095865 /* Calc */ = {
 			isa = PBXGroup;
 			children = (
-				0197905C21215ECC00095865 /* AppDelegate.swift */,
-				0197905E21215ECC00095865 /* ViewController.swift */,
-				0197906021215ECC00095865 /* Main.storyboard */,
-				0197906321215ECD00095865 /* Assets.xcassets */,
-				0197906521215ECD00095865 /* LaunchScreen.storyboard */,
-				0197906821215ECD00095865 /* Info.plist */,
-				01F3AD1C216CACAE0016DC21 /* CalculatorBrain.swift */,
+				0190CADC21B7C28100600C0C /* model */,
+				0190CADE21B7C2BB00600C0C /* views */,
+				0190CADD21B7C29600600C0C /* controllers */,
+				0190CADF21B7C2DD00600C0C /* additional */,
 			);
 			path = Calc;
 			sourceTree = "<group>";
@@ -216,7 +254,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0197906721215ECD00095865 /* LaunchScreen.storyboard in Resources */,
 				0197906421215ECD00095865 /* Assets.xcassets in Resources */,
 				0197906221215ECC00095865 /* Main.storyboard in Resources */,
 			);
@@ -236,9 +273,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01ADABEB21BFA2F90073ADE4 /* GrfViewController.swift in Sources */,
 				01F3AD1D216CACAE0016DC21 /* CalculatorBrain.swift in Sources */,
-				0197905F21215ECC00095865 /* ViewController.swift in Sources */,
+				01ADABED21BFA32E0073ADE4 /* GrfView.swift in Sources */,
+				0197905F21215ECC00095865 /* CalculatorBrainViewController.swift in Sources */,
 				0197905D21215ECC00095865 /* AppDelegate.swift in Sources */,
+				01ADABEF21BFA33D0073ADE4 /* AxesDrawer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,14 +307,6 @@
 				0197906121215ECC00095865 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0197906521215ECD00095865 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0197906621215ECD00095865 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -404,7 +436,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27W6695PZZ;
-				INFOPLIST_FILE = Calc/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Calc/additional/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -422,7 +454,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27W6695PZZ;
-				INFOPLIST_FILE = Calc/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Calc/additional/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -439,6 +471,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HN8JLXQ5UX;
 				INFOPLIST_FILE = CalcTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -458,6 +491,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HN8JLXQ5UX;
 				INFOPLIST_FILE = CalcTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

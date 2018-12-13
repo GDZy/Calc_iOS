@@ -10,6 +10,11 @@ import Foundation
 
 class CalculatorBrain: CustomStringConvertible {
     
+    struct CalculatorConstant {
+        static let programKey = "CalculatorBrain.CalculatorConstant.ProgramKey"
+        static let variablesKey = "CalculatorBrain.CalculatorConstant.VariablesKey"
+    }
+    
     enum Result: CustomStringConvertible {
         case Value (Double)
         case Error (String)
@@ -65,25 +70,12 @@ class CalculatorBrain: CustomStringConvertible {
         }
         
     }
+    let defaultStorage = UserDefaults()
     
     private var stackOp = [Op] ()
     private var knowOperations = [String: Op] ()
     private var variableValues = [String: Double] ()
-    
-    func getVariable(name: String) -> Result {
-        if let variable = variableValues[name] {
-            return .Value(variable)
-        }
-        return .Error("variable is missing")
-    }
-    
-    func setVariable(_ symbol: String, value: Double) {
-        variableValues[symbol] = value
-    }
-    
-    func clearVariables() {
-        variableValues.removeAll()
-    }
+    private var variableName: String = ""
     
     var description: String {
         let (descriptionOp, _) = resultDescription(ops: stackOp)
@@ -105,7 +97,48 @@ class CalculatorBrain: CustomStringConvertible {
         learnOperation(Op.unaryOperation("±", { -$0 }, nil))
         learnOperation(Op.constantOperation("𝜋", { .pi }))
     }
+
+    func saveProgram() {
+        let presentationProgram = stackOp.map {$0.description}
+        defaultStorage.set(presentationProgram, forKey: CalculatorConstant.programKey)
+        defaultStorage.set(variableValues, forKey: CalculatorConstant.variablesKey)
+        
+    }
     
+    func restoreProgram() {
+        var mirrorStackOp = [Op]()
+        guard let presentationStackOp = defaultStorage.object(forKey: CalculatorConstant.programKey) as? Array<String> else { return }
+        for descriptionOp in presentationStackOp {
+            if let op = knowOperations[descriptionOp] {
+                mirrorStackOp.append(op)
+            } else if let operand = CalculatorFormatter.sharedInstanse.number(from: descriptionOp)?.doubleValue {
+                mirrorStackOp.append(Op.operand(operand))
+            } else {
+                variableName = descriptionOp
+                mirrorStackOp.append(Op.variable(descriptionOp))
+            }
+        }
+        stackOp = mirrorStackOp
+        
+        guard let presentationVariable = defaultStorage.object(forKey: CalculatorConstant.variablesKey) as? [String: Double] else { return }
+        variableValues = presentationVariable
+    }
+    
+    func getVariable(name: String) -> Result {
+        if let variable = variableValues[name] {
+            return .Value(variable)
+        }
+        return .Error("variable is missing")
+    }
+    
+    func setVariable(_ symbol: String, value: Double) {
+        variableValues[symbol] = value
+    }
+    
+    func clearVariables() {
+        variableValues.removeAll()
+    }
+
     func clearStack() {
         stackOp.removeAll()
     }
@@ -216,6 +249,11 @@ class CalculatorBrain: CustomStringConvertible {
             }
         }
         return (.Error("operand is missed"), ops)
+    }
+    
+    func evaluateFor(variableValue: Double) -> Double? {
+        setVariable(variableName, value: variableValue)
+        return evaluate()
     }
     
     func evaluate() -> Double? {
