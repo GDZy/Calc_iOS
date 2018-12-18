@@ -98,27 +98,48 @@ class CalculatorBrain: CustomStringConvertible {
         learnOperation(Op.constantOperation("𝜋", { .pi }))
     }
 
+    var program: AnyObject? {
+        get {
+            return stackOp.map {$0.description} as AnyObject
+        }
+        set {
+            if let opSymbols = newValue as? [String] {
+
+                var newOpStack = [Op]()
+                for opSymbol in opSymbols {
+                    if let op = knowOperations[opSymbol] {
+                        newOpStack.append(op)
+                    } else if let operand = CalculatorFormatter.sharedInstanse.number(from: opSymbol)?.doubleValue {
+                        newOpStack.append(.operand(operand))
+                    } else {
+                        newOpStack.append(.variable(opSymbol))
+                    }
+                }
+                stackOp = newOpStack
+            }
+        }
+    }
+    
     func saveProgram() {
         let presentationProgram = stackOp.map {$0.description}
         defaultStorage.set(presentationProgram, forKey: CalculatorConstant.programKey)
         defaultStorage.set(variableValues, forKey: CalculatorConstant.variablesKey)
-        
     }
     
     func restoreProgram() {
-        var mirrorStackOp = [Op]()
+        var additionalStackOp = [Op]()
         guard let presentationStackOp = defaultStorage.object(forKey: CalculatorConstant.programKey) as? Array<String> else { return }
         for descriptionOp in presentationStackOp {
             if let op = knowOperations[descriptionOp] {
-                mirrorStackOp.append(op)
+                additionalStackOp.append(op)
             } else if let operand = CalculatorFormatter.sharedInstanse.number(from: descriptionOp)?.doubleValue {
-                mirrorStackOp.append(Op.operand(operand))
+                additionalStackOp.append(Op.operand(operand))
             } else {
                 variableName = descriptionOp
-                mirrorStackOp.append(Op.variable(descriptionOp))
+                additionalStackOp.append(Op.variable(descriptionOp))
             }
         }
-        stackOp = mirrorStackOp
+        stackOp = additionalStackOp
         
         guard let presentationVariable = defaultStorage.object(forKey: CalculatorConstant.variablesKey) as? [String: Double] else { return }
         variableValues = presentationVariable

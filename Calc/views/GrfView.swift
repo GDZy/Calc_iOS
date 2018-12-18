@@ -54,19 +54,21 @@ class GrfView: UIView {
         let (stepGrf, countSteps) = getDrawingStepAndCoutsStep()
         
         let initialGrfX = -origenGrf.x / scale
-        var nextGrfX = initialGrfX + stepGrf
-        var previousPoint = converCoordinate(point: getGrfPoint(x: initialGrfX))
+        var nextGrfX = initialGrfX
+        var isFirstValue = false
         
         for _ in 0...countSteps {
-            let nextPoint = converCoordinate(point: getGrfPoint(x: nextGrfX))
-            if let pointOne = previousPoint, let pointTwo = nextPoint {
-                print(pointOne, " - ", pointTwo)
-                grfPath.move(to: pointOne)
-                grfPath.addLine(to: pointTwo)
+            if let point = convertCoordinate(point: getGrfPoint(x: nextGrfX)) {
+                if isFirstValue {
+                    grfPath.addLine(to: point)
+                } else {
+                    grfPath.move(to: point)
+                }
+                isFirstValue = true
+            } else {
+                isFirstValue = false
             }
-            
             nextGrfX += stepGrf
-            previousPoint = nextPoint
         }
         
         grfPath.stroke()
@@ -89,7 +91,7 @@ class GrfView: UIView {
         return CGPoint(x: x, y: y)
     }
     
-    private func converCoordinate(point: CGPoint?) -> CGPoint? {
+    private func convertCoordinate(point: CGPoint?) -> CGPoint? {
         guard let p = point else { return nil }
         let pX = p.x * scale + origenGrf.x
         let pY = -p.y * scale + origenGrf.y

@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CalcTests/CalcTests.swift"
-            timestampString = "561278513.060667"
+            filePath = "Calc/controllers/GrfViewController.swift"
+            timestampString = "566829509.168383"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "testPushOperandVariable()"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "getYfor(x:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CalcTests/CalcTests.swift"
-            timestampString = "561278513.0615669"
+            filePath = "Calc/controllers/GrfViewController.swift"
+            timestampString = "566829509.168462"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "testPushOperandVariable()"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "getYfor(x:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,29 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Calc/views/GrfView.swift"
-            timestampString = "566395984.648955"
+            filePath = "Calc/model/CalculatorBrain.swift"
+            timestampString = "566829509.168517"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "draw(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Calc/views/GrfView.swift"
-            timestampString = "566395984.649063"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "converCoordinate(point:)"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
+            landmarkName = "evaluate()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

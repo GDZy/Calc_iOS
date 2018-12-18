@@ -118,17 +118,10 @@ class CalculatorBrainViewController: UIViewController {
             static let grfSegueKey = "Show Grf"
         }
 
-        switch segue.identifier {
-        case Constant.grfSegueKey:
-            brain.saveProgram()
-//            let duplicateBrain = CalculatorBrain()
-//            duplicateBrain.restoreProgram()
-//
-//            if let vc = segue.destination as? GrfViewController {
-//                vc.program = duplicateBrain
-//            }
-        default:
-            break
+        if let grfVC = segue.destination as? GrfViewController {
+            if segue.identifier == Constant.grfSegueKey {
+                grfVC.program = brain.program
+            }
         }
     }
 }

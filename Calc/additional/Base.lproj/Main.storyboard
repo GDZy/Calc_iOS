@@ -354,7 +354,7 @@
                             <constraint firstItem="Ic9-9f-Ew5" firstAttribute="leading" secondItem="wi2-3x-3V7" secondAttribute="trailing" constant="8" id="rWa-kS-J3r"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bNr-Nd-txM" secondAttribute="trailing" constant="8" id="sP6-fp-he9"/>
                             <constraint firstItem="d7U-bg-W0O" firstAttribute="leading" secondItem="Yf5-gd-0x4" secondAttribute="trailing" constant="8" id="soI-7p-Llh"/>
-                            <constraint firstItem="ZBu-hk-aMR" firstAttribute="top" secondItem="lq9-0S-Gpr" secondAttribute="bottom" constant="8" id="sop-Im-ceW"/>
+                            <constraint firstItem="ZBu-hk-aMR" firstAttribute="top" secondItem="lq9-0S-Gpr" secondAttribute="bottom" constant="8" symbolic="YES" id="sop-Im-ceW"/>
                             <constraint firstItem="HHQ-KI-Jwc" firstAttribute="height" secondItem="1xR-pP-a0h" secondAttribute="height" id="tUt-pc-hCu"/>
                             <constraint firstItem="Ic9-9f-Ew5" firstAttribute="width" secondItem="1xR-pP-a0h" secondAttribute="width" id="tgq-5g-W2c"/>
                             <constraint firstItem="RSw-rO-fg1" firstAttribute="top" secondItem="Yf5-gd-0x4" secondAttribute="bottom" constant="8" id="tnn-nS-usJ"/>
@@ -382,7 +382,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1389.8550724637682" y="-800.54347826086962"/>
+            <point key="canvasLocation" x="1333.3333333333335" y="-799.72826086956525"/>
         </scene>
         <!--Grf View Controller-->
         <scene sceneID="OTQ-3v-Qcl">
@@ -398,7 +398,7 @@
                                 <gestureRecognizers/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="scale">
-                                        <real key="value" value="10"/>
+                                        <real key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>

@@ -17,17 +17,23 @@ class GrfViewController: UIViewController {
         }
     }
     
-    private lazy var program: CalculatorBrain = {
-        let _program = CalculatorBrain()
-        _program.restoreProgram()
-        return _program
-    }()
+    typealias PropertyList = AnyObject
+    var program: PropertyList? {
+        didSet {
+            brain.program = program
+            brain.setVariable("M", value: 0)
+            title = brain.description.components(separatedBy: ",").last ?? ""
+        }
+    }
+    
+    private let brain = CalculatorBrain()
 }
 
 extension GrfViewController: GrfViewDatasource {
     
     func getYfor(x: CGFloat) -> CGFloat? {
-        guard let y = program.evaluateFor(variableValue: Double(x)) else { return nil }
+        brain.setVariable("M", value: Double(x))
+        guard let y = brain.evaluate() else { return nil }
         return CGFloat(y)
     }
 }

@@ -129,8 +129,8 @@ struct AxesDrawer
         
         func draw(at location: CGPoint, usingColor color: UIColor) {
             let attributes = [
-                NSAttributedStringKey.font : UIFont.preferredFont(forTextStyle: .footnote),
-                NSAttributedStringKey.foregroundColor : color
+                NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .footnote),
+                NSAttributedString.Key.foregroundColor : color
             ]
             var textRect = CGRect(center: location, size: text.size(withAttributes: attributes))
             switch self {
