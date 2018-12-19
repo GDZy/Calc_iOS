@@ -10,10 +10,38 @@ import UIKit
 
 class GrfViewController: UIViewController {
 
+    private struct Keys {
+        static let scale = "GrfViewController.Key.scale"
+        static let origen = "GrfViewController.Key.origen"
+    }
+    
+    private let defaults = UserDefaults.standard
+    
+    private var scale: Double {
+        get { return Double(grfView.scale) }
+        set { grfView.scale = CGFloat(newValue) }
+    }
+    private var origen: CGPoint {
+        get { return grfView.origenGrf }
+        set { grfView.origenGrf = newValue }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super .viewWillDisappear(animated)
+        
+        defaults.set(scale, forKey: Keys.scale)
+        defaults.set(origen.dictionaryRepresentation, forKey: Keys.origen)
+    }
+    
     @IBOutlet weak var grfView: GrfView! {
         didSet {
             grfView.addGestureRecognizer(UIPinchGestureRecognizer(target: grfView, action: #selector(grfView.changeScale(_:))))
             grfView.datasource = self
+            
+            scale = defaults.object(forKey: Keys.scale) as? Double ?? 0
+            if let origenPresentation = defaults.object(forKey: Keys.origen) as? NSDictionary {
+                origen = CGPoint(dictionaryRepresentation: origenPresentation) ?? .zero
+            }
         }
     }
     

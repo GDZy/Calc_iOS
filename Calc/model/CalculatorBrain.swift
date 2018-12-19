@@ -279,8 +279,8 @@ class CalculatorBrain: CustomStringConvertible {
     
     func evaluate() -> Double? {
         let (result, remainder) = evaluate(ops: stackOp)
-        print("\(stackOp) = \(String(describing: result)) with \(remainder) left over, \(variableValues)")
-        print(description)
+//        print("\(stackOp) = \(String(describing: result)) with \(remainder) left over, \(variableValues)")
+//        print(description)
         return result
     }
     

@@ -19,23 +19,25 @@ class GrfView: UIView {
         static let scaleKey = "GrfConstantKey.scale"
         static let origenGrfKey = "GrfConstantKey.origenGrf"
         static let defaultScale: CGFloat = 100
-        //static let defaultOrigenGrf = CGPoint(x: , y: <#T##CGFloat#>)
     }
     
     weak var datasource: GrfViewDatasource?
 
+    private var isShowHashmarks = true {
+        didSet { setNeedsDisplay() }
+    }
     private lazy var axesDrawer = AxesDrawer(contentScaleFactor: contentScaleFactor)
     private let defaultStorage = UserDefaults()
 
     @IBInspectable
-    private var scale: CGFloat = 100 {
+    var scale: CGFloat = 100 {
         didSet {
             // where save Scale to storage?
             setNeedsDisplay()
         }
     }
     
-    private var origenGrf: CGPoint = CGPoint.zero {
+    var origenGrf: CGPoint = CGPoint.zero {
         didSet {
             saveOrigenToStorage()
             setNeedsDisplay()
@@ -47,7 +49,7 @@ class GrfView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        axesDrawer.drawAxes(in: bounds, origin: origenGrf, pointsPerUnit: scale)
+        axesDrawer.drawAxes(in: bounds, origin: origenGrf, pointsPerUnit: scale, isShowHashmarks: isShowHashmarks)
         
         let grfPath = getGrfPath()
     
@@ -99,16 +101,22 @@ class GrfView: UIView {
     }
     
     @IBAction func moveOrigenGrf(_ gesture: UIPanGestureRecognizer) {
-        if gesture.state == .changed {
+        switch gesture.state {
+        case .began:
+            isShowHashmarks = false
+        case .changed:
             let offsetOrigenGrf = gesture.translation(in: self)
             origenGrf.x += offsetOrigenGrf.x
             origenGrf.y += offsetOrigenGrf.y
             gesture.setTranslation(.zero, in: self)
+        case .ended:
+            isShowHashmarks = true
+        default:
+            break
         }
     }
     
     @IBAction func setOrigenGrf(_ gesture: UITapGestureRecognizer) {
-        print(gesture.location(in: self))
         if gesture.state == .ended {
             origenGrf = gesture.location(in: self)
         }
