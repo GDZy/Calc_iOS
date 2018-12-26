@@ -26,13 +26,6 @@ class GrfViewController: UIViewController {
         set { grfView.origenGrf = newValue }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super .viewWillDisappear(animated)
-        
-        defaults.set(scale, forKey: Keys.scale)
-        defaults.set(origen.dictionaryRepresentation, forKey: Keys.origen)
-    }
-    
     @IBOutlet weak var grfView: GrfView! {
         didSet {
             grfView.addGestureRecognizer(UIPinchGestureRecognizer(target: grfView, action: #selector(grfView.changeScale(_:))))
@@ -55,6 +48,32 @@ class GrfViewController: UIViewController {
     }
     
     private let brain = CalculatorBrain()
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super .viewWillDisappear(animated)
+        
+        defaults.set(scale, forKey: Keys.scale)
+        defaults.set(origen.dictionaryRepresentation, forKey: Keys.origen)
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super .viewWillTransition(to: size, with: coordinator)
+        print ("viewWillTransition", size)
+        origen = CGPoint(x: size.width / 2, y: (size.height / 2))
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print ("viewDidLayoutSubviews")
+        print (view.frame)
+        print (grfView.frame)
+    }
+//
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//        print("viewWillLayoutSubviews")
+//    }
 }
 
 extension GrfViewController: GrfViewDatasource {
