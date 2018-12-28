@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01032C8D21D3D2C80062D1A6 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01032C8C21D3D2C80062D1A6 /* InfoViewController.swift */; };
+		01032C8F21D3D4470062D1A6 /* InfoGrfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01032C8E21D3D4470062D1A6 /* InfoGrfViewController.swift */; };
 		0197905D21215ECC00095865 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0197905C21215ECC00095865 /* AppDelegate.swift */; };
 		0197905F21215ECC00095865 /* CalculatorBrainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0197905E21215ECC00095865 /* CalculatorBrainViewController.swift */; };
 		0197906221215ECC00095865 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0197906021215ECC00095865 /* Main.storyboard */; };
@@ -29,6 +31,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		01032C8C21D3D2C80062D1A6 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		01032C8E21D3D4470062D1A6 /* InfoGrfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoGrfViewController.swift; sourceTree = "<group>"; };
 		0197905921215ECC00095865 /* Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0197905C21215ECC00095865 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0197905E21215ECC00095865 /* CalculatorBrainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorBrainViewController.swift; sourceTree = "<group>"; };
@@ -81,6 +85,8 @@
 			children = (
 				0197905E21215ECC00095865 /* CalculatorBrainViewController.swift */,
 				01ADABEA21BFA2F90073ADE4 /* GrfViewController.swift */,
+				01032C8E21D3D4470062D1A6 /* InfoGrfViewController.swift */,
+				01032C8C21D3D2C80062D1A6 /* InfoViewController.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -273,9 +279,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01032C8F21D3D4470062D1A6 /* InfoGrfViewController.swift in Sources */,
 				01ADABEB21BFA2F90073ADE4 /* GrfViewController.swift in Sources */,
 				01F3AD1D216CACAE0016DC21 /* CalculatorBrain.swift in Sources */,
 				01ADABED21BFA32E0073ADE4 /* GrfView.swift in Sources */,
+				01032C8D21D3D2C80062D1A6 /* InfoViewController.swift in Sources */,
 				0197905F21215ECC00095865 /* CalculatorBrainViewController.swift in Sources */,
 				0197905D21215ECC00095865 /* AppDelegate.swift in Sources */,
 				01ADABEF21BFA33D0073ADE4 /* AxesDrawer.swift in Sources */,

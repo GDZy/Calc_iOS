@@ -10,19 +10,19 @@ import UIKit
 
 class GrfViewController: UIViewController {
 
-    private struct Keys {
-        static let scale = "GrfViewController.Key.scale"
-        static let origen = "GrfViewController.Key.origen"
+    private struct Grf {
+        static let scaleKey = "GrfViewController.Key.scale"
+        static let origenKey = "GrfViewController.Key.origen"
     }
     
     private let defaults = UserDefaults.standard
     
     private var scale: Double {
-        get { return Double(grfView.scale) }
+        get { return Double(grfView?.scale ?? 100) }
         set { grfView.scale = CGFloat(newValue) }
     }
     private var origen: CGPoint {
-        get { return grfView.origenGrf }
+        get { return grfView?.origenGrf ?? CGPoint(x: view.bounds.midX, y: view.bounds.midY)}
         set { grfView.origenGrf = newValue }
     }
     
@@ -31,9 +31,9 @@ class GrfViewController: UIViewController {
             grfView.addGestureRecognizer(UIPinchGestureRecognizer(target: grfView, action: #selector(grfView.changeScale(_:))))
             grfView.datasource = self
             
-            scale = defaults.object(forKey: Keys.scale) as? Double ?? 0
-            if let origenPresentation = defaults.object(forKey: Keys.origen) as? NSDictionary {
-                origen = CGPoint(dictionaryRepresentation: origenPresentation) ?? .zero
+            scale = defaults.object(forKey: Grf.scaleKey) as? Double ?? 0
+            if let origenPresentation = defaults.object(forKey: Grf.origenKey) as? NSDictionary {
+                origen = CGPoint(dictionaryRepresentation: origenPresentation) ?? CGPoint(x: grfView.frame.midX, y: grfView.frame.midY)
             }
         }
     }
@@ -52,10 +52,12 @@ class GrfViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super .viewWillDisappear(animated)
         
-        defaults.set(scale, forKey: Keys.scale)
-        defaults.set(origen.dictionaryRepresentation, forKey: Keys.origen)
+        if grfView != nil {
+            defaults.set(scale, forKey: Grf.scaleKey)
+            defaults.set(origen.dictionaryRepresentation, forKey: Grf.origenKey)
+        }
     }
-
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super .viewWillTransition(to: size, with: coordinator)
         print ("viewWillTransition", size)
@@ -69,18 +71,13 @@ class GrfViewController: UIViewController {
         print (view.frame)
         print (grfView.frame)
     }
-//
-//    override func viewWillLayoutSubviews() {
-//        super.viewWillLayoutSubviews()
-//        print("viewWillLayoutSubviews")
-//    }
 }
 
 extension GrfViewController: GrfViewDatasource {
     
     func getYfor(x: CGFloat) -> CGFloat? {
         brain.setVariable("M", value: Double(x))
-        guard let y = brain.evaluate() else { return nil }
+        guard let y = brain.evaluate(), y.isNormal || y.isZero  else { return nil }
         return CGFloat(y)
     }
 }

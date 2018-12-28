@@ -8,6 +8,45 @@
 
 import UIKit
 
+enum Axis: String {
+    case x
+    case y
+}
+
+struct Coordinate {
+    var value: CGFloat
+    var axis: Axis
+    var occurrenceNumber: Int
+}
+
+struct Info {
+    var description: String {
+        let formatter = CalculatorFormatter.sharedInstanse
+        var miY = "minY = \(formatter.string(for: minY.value)!) \nnumb = \(formatter.string(for: minY.occurrenceNumber)!)\n"
+        var maY = "maxY = \(formatter.string(for: maxY.value)!) \nnumb = \(formatter.string(for: maxY.occurrenceNumber)!)"
+        return "\(miY)\n\(maY)"
+    }
+    
+    var minY = Coordinate(value: 0, axis: .y, occurrenceNumber: 0)
+    var maxY = Coordinate(value: 0, axis: .y, occurrenceNumber: 0)
+    var step: Int = 0
+    
+    mutating func calculate (y: CGFloat?) {
+        guard let _y = y else { return }
+        
+        if step == 0 {
+            minY.value = _y
+            maxY.value = _y
+        }
+        
+        if _y < minY.value { minY.value = _y; minY.occurrenceNumber = step }
+        if _y > maxY.value { maxY.value = _y; maxY.occurrenceNumber = step }
+        
+        step += 1
+    }
+}
+
+
 protocol GrfViewDatasource: AnyObject {
     func getYfor(x: CGFloat) -> CGFloat?
 }
@@ -15,12 +54,6 @@ protocol GrfViewDatasource: AnyObject {
 @IBDesignable
 class GrfView: UIView {
 
-    struct GrfConstant {
-        static let scaleKey = "GrfConstantKey.scale"
-        static let origenGrfKey = "GrfConstantKey.origenGrf"
-        static let defaultScale: CGFloat = 100
-    }
-    
     weak var datasource: GrfViewDatasource?
 
     private var isShowHashmarks = true {
@@ -28,24 +61,20 @@ class GrfView: UIView {
     }
     private lazy var axesDrawer = AxesDrawer(contentScaleFactor: contentScaleFactor)
     private let defaultStorage = UserDefaults()
+    
+    var info = Info()
 
     @IBInspectable
-    var scale: CGFloat = 100 {
+    var scale: CGFloat = 0 {
         didSet {
-            // where save Scale to storage?
             setNeedsDisplay()
         }
     }
     
     var origenGrf: CGPoint = CGPoint.zero {
         didSet {
-            saveOrigenToStorage()
             setNeedsDisplay()
         }
-    }
-    
-    override func awakeFromNib() {
-        setInitialStateView()
     }
     
     override func draw(_ rect: CGRect) {
@@ -57,24 +86,32 @@ class GrfView: UIView {
         
         let initialGrfX = -origenGrf.x / scale
         var nextGrfX = initialGrfX
-        var isFirstValue = false
+        var isFirstValue = true
+        
+        info = Info()
         
         for _ in 0...countSteps {
-            if let point = convertCoordinate(point: getGrfPoint(x: nextGrfX)) {
+            let grfPoint = getGrfPoint(x: nextGrfX)
+            
+            info.calculate(y: grfPoint?.y)
+            
+            if let screenPoint = convertCoordinate(point: grfPoint) {
                 if isFirstValue {
-                    grfPath.addLine(to: point)
+                    grfPath.move(to: screenPoint)
                 } else {
-                    grfPath.move(to: point)
+                    grfPath.addLine(to: screenPoint)
                 }
-                isFirstValue = true
-            } else {
                 isFirstValue = false
+            } else {
+                isFirstValue = true
             }
+            
             nextGrfX += stepGrf
         }
         
         grfPath.stroke()
     }
+    
     private func getGrfPath() -> UIBezierPath {
         let path = UIBezierPath()
         path.lineWidth = 1
@@ -127,33 +164,5 @@ class GrfView: UIView {
             scale *= gesture.scale
             gesture.scale = 1
         }
-    }
-    
-    private func setInitialStateView() {
-        setInitialOrigenGrf()
-        setInitialScale()
-    }
-    
-    private func setInitialOrigenGrf() {
-        let pointPresentation = defaultStorage.object(forKey: GrfConstant.origenGrfKey) as? NSDictionary ?? NSDictionary()
-        origenGrf = CGPoint(dictionaryRepresentation: pointPresentation) ?? .zero
-    }
-    
-    private func setInitialScale() {
-        let scalePresentation = defaultStorage.object(forKey: GrfConstant.scaleKey) as? CGFloat
-        scale = scalePresentation ?? GrfConstant.defaultScale
-    }
-    
-    private func saveAllToStorage() {
-        saveOrigenToStorage()
-        saveScaleToStorage()
-    }
-    
-    private func saveScaleToStorage() {
-        defaultStorage.set(scale, forKey: GrfConstant.scaleKey)
-    }
-    
-    private func saveOrigenToStorage() {
-        defaultStorage.set(origenGrf.dictionaryRepresentation, forKey: GrfConstant.origenGrfKey)
     }
 }

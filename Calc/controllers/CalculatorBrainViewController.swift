@@ -115,11 +115,17 @@ class CalculatorBrainViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         struct Constant {
-            static let grfSegueKey = "Show Grf"
+            static let grfSegueIdentifire = "Show Grf"
         }
 
-        if let grfVC = segue.destination as? GrfViewController {
-            if segue.identifier == Constant.grfSegueKey {
+        if segue.identifier == Constant.grfSegueIdentifire {
+            var destination: UIViewController? = segue.destination
+            
+            if let navCon = segue.destination as? UINavigationController {
+                destination = navCon.visibleViewController
+            }
+            
+            if let grfVC = destination as? GrfViewController {
                 grfVC.program = brain.program
             }
         }
